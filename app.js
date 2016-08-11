@@ -259,7 +259,7 @@ function receivedMessage(event) {
 //        sendTextMessage(senderID, messageText);
 //    }
   } else if (messageAttachments) {
-   writelog(senderID,"User Sends "+messageAttachments[0].type+"","USER");
+   writelog(senderID,"User Uploaded "+messageAttachments[0].type+"","USER");
  if(messageAttachments[0].type!="image")
  { 
    checkstatus(senderID,"file",messageAttachments[0].type,messageAttachments,"","","");
