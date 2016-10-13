@@ -379,30 +379,6 @@ function receivedPostback(event) {
                      if (data) {  
                      //writelog(senderID,"Yes","USER");                  
                      assignmission(senderID,data.first_name+" "+data.last_name,data.profile_pic,"Q1YES",recipientID);  
-                     
-                      var messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Do you have invoices for soft drinks purchased today?",
-                    "subtitle": "",
-                    "buttons": [{
-                        "type": "postback",
-                        "title": "Yes",
-                        "payload": "Q2YES"
-                    }, {
-                        "type": "postback",
-                        "title": "No",
-                        "payload": "Q2NO"
-                    }]
-                }]
-            }
-        }
-    };
-      sendGenericMessage(senderID,messageData);  
-       
                       
                      }
                      }); 
@@ -417,7 +393,7 @@ function receivedPostback(event) {
                      if (data) {          
                      // writelog(senderID,"No","USER");          
                      assignmission(senderID,data.first_name+" "+data.last_name,data.profile_pic,"Q1NO",recipientID);   
-                      sendTextMessage(senderID,"Thank You");
+                     
                     
                      }
                      }); 
@@ -686,8 +662,34 @@ var http = require('http');
     var reqPost = http.request(extServeroptionspost, function (res) {      
         res.on('data', function (data) {
             process.stdout.write(data);    
-            var status=data.toString("utf8").replace('"', '').replace('"', '');
-            console.log(status);                 
+            if(Userdetails.Status=="Q1YES")
+            {
+                           var messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Do you have invoices for soft drinks purchased today?",
+                    "subtitle": "",
+                    "buttons": [{
+                        "type": "postback",
+                        "title": "Yes",
+                        "payload": "Q2YES"
+                    }, {
+                        "type": "postback",
+                        "title": "No",
+                        "payload": "Q2NO"
+                    }]
+                }]
+            }
+        }
+    };
+      sendGenericMessage(senderID,messageData);  
+            }
+            else{
+             sendTextMessage(senderID,"Thank You");
+            }                
         });
     });
 
