@@ -662,7 +662,7 @@ var http = require('http');
     var reqPost = http.request(extServeroptionspost, function (res) {      
         res.on('data', function (data) {
             process.stdout.write(data);    
-            if(Userdetails.Status=="Q1YES")
+            if(Status=="Q1YES")
             {
                            var messageData = {
         "attachment": {
