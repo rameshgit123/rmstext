@@ -245,8 +245,7 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
 
-  if (messageText) {  
-  writelog(senderID,messageText,"USER");
+  if (messageText) {   
   checkstatus(senderID,messageText,"text","","","","");   
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
@@ -259,7 +258,7 @@ function receivedMessage(event) {
 //        sendTextMessage(senderID, messageText);
 //    }
   } else if (messageAttachments) {
-   writelog(senderID,"User Uploaded "+messageAttachments[0].type+"","USER");
+  // writelog(senderID,"User Uploaded "+messageAttachments[0].type+"","USER");
  if(messageAttachments[0].type!="image")
  { 
    checkstatus(senderID,"file",messageAttachments[0].type,messageAttachments,"","","");
@@ -378,7 +377,7 @@ function receivedPostback(event) {
 
              fb.api('/' + senderID + '', function (err, data) {            
                      if (data) {  
-                     writelog(senderID,"Yes","USER");                  
+                     //writelog(senderID,"Yes","USER");                  
                      assignmission(senderID,data.first_name+" "+data.last_name,data.profile_pic,"Q1YES",recipientID);  
                      
                       var messageData = {
@@ -416,7 +415,7 @@ function receivedPostback(event) {
 
    fb.api('/' + senderID + '', function (err, data) {            
                      if (data) {          
-                      writelog(senderID,"No","USER");          
+                     // writelog(senderID,"No","USER");          
                      assignmission(senderID,data.first_name+" "+data.last_name,data.profile_pic,"Q1NO",recipientID);   
                       sendTextMessage(senderID,"Thank You");
                     
@@ -427,9 +426,9 @@ function receivedPostback(event) {
   }
   else if(payload=="Q2YES")
   {
-  writelog(senderID,"Yes","USER");
+// writelog(senderID,"Yes","USER");
    SendQ2status(senderID,"Q2YES");
-  sendTextMessage(senderID,"Please use the camera button below to take a photo of the invoice and send it.");
+  sendTextMessagewithlog(senderID,"Please use the camera button below to take a photo of the invoice and send it.");
    
   }
   else if(payload=="USER_DEFINED_PAYLOAD")
@@ -458,49 +457,47 @@ function receivedPostback(event) {
       sendGenericMessage(senderID,messageData); 
   }
   else if(payload=="Q2NO"){ 
-   writelog(senderID,"No","USER");
+  // writelog(senderID,"No","USER");
   SendQ2status(senderID,"Q2NO");   
-  sendTextMessage(senderID,"How many soft drink items (SKUs) you purchased today? [Please enter a number]");
+  sendTextMessagewithlog(senderID,"How many soft drink items (SKUs) you purchased today? [Please enter a number]");
    
   }
   else if(payload=="Q4NO")
   {
-    writelog(senderID,"No","USER");
+
   checkstatus(senderID,"Q4NO","text","");  
   }
    else if(payload=="Q4YES")
   {
-    writelog(senderID,"Yes","USER");
+    
    checkstatus(senderID,"Q4YES","text","");  
   }
   else if(payload=="MOREITEMSYES")
   {
-   writelog(senderID,"Yes","USER");
+  
   checkstatus(senderID,"MOREITEMSYES","text","");  
   }
   else if(payload=="MOREITEMSNO")
   {
-   writelog(senderID,"No","USER");
   checkstatus(senderID,"MOREITEMSNO","text","");   
   }
   else if(payload=="FINALCONFIRMYES")
-  {
-   writelog(senderID,"Yes","USER");
+  {  
   checkstatus(senderID,"FINALCONFIRMYES","text","");  
   }
   else if(payload=="FINALCONFIRMNO")
   {
-   writelog(senderID,"No","USER");
+  
   checkstatus(senderID,"FINALCONFIRMNO","text","");   
   }
   else if(payload=="ISPICYES")
   {
-   writelog(senderID,"Yes","USER");
+  
    checkstatus(senderID,"ISPICYES","text","");   
   }
    else if(payload=="ISPICNO")
   {
-   writelog(senderID,"Yes","USER");
+
    checkstatus(senderID,"ISPICNO","text","");   
   }
 
@@ -537,7 +534,6 @@ function sendImageMessage(recipientId) {
  *
  */
 function sendTextMessage(recipientId, messageText) {
-writelog(recipientId,messageText,"BOT");
   var messageData = {
     recipient: {
       id: recipientId
@@ -550,6 +546,23 @@ writelog(recipientId,messageText,"BOT");
   callSendAPI(messageData);
 }
 
+/*
+ * Send a text message using the Send API.
+ *
+ */
+function sendTextMessagewithlog(recipientId, messageText) {
+writelog(recipientId,messageText,"BOT");
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText
+    }
+  };
+
+  callSendAPI(messageData);
+}
 
 /*
  * Send a Structured Message (Generic Message type) using the Send API.
@@ -863,10 +876,10 @@ var http = require('http');
 
       }
        else if(status=="Q3Image"){
-       sendTextMessage(id,"Please use the camera button below to take a photo of the invoice and send it.");
+       sendTextMessagewithlog(id,"Please use the camera button below to take a photo of the invoice and send it.");
        }
        else if(status=="Q5Answer"){
-   sendTextMessage(id,"How many soft drink items (SKUs) you purchased today? [Please enter a number]");
+   sendTextMessagewithlog(id,"How many soft drink items (SKUs) you purchased today? [Please enter a number]");
        }
         else if(status=="Q4"){
 
