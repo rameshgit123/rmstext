@@ -20,7 +20,7 @@ const
    vision = require('node-cloud-vision-api');
 
 var app = express();
-vision.init({ auth: 'AIzaSyBBd-AhSgjF76rAW0NKy20WeMdxx0dYKec' });
+vision.init({ auth: 'AIzaSyC6Qv4tA3WvR_ejLmqRkkXENyiV0Mvz_iY' });
  //facebook sdk for get user inforamtion.
   var sdk = require('facebook-node-sdk');
         var fb = new sdk({
